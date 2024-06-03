@@ -10,14 +10,14 @@ Then just create the box!
 
 ```zsh
 ~ 
-❯ distrobox create --image archlinux:latest --name archlinux --home /home/$USER/containers/archlinux --volume /etc/static/profiles/per-user:/etc/profiles/per-user:ro --additional-packages "systemd"  --pre-init-hooks "pacman -S -y -y; pacman-key --init; pacman-key --populate archlinux; pacman -S --noconfirm openssl dbus" --verbose --init
+❯ distrobox create --image archlinux:latest --name archlinux --home /home/$USER/containers/archlinux --additional-packages "systemd" --pre-init-hooks "pacman -S -y -y -u --noconfirm --overwrite='*'; pacman -S --noconfirm openssl dbus" --verbose --init
 ```
 ### Notes:
 - You don't necessarily need a different home folder for the container, but it's my preference (cleaner).
-- Attaching your user profile seems to allow the container access to some of the host's binaries installed with home manager.
+- Attaching your user profile with `--volume /etc/static/profiles/per-user:/etc/profiles/per-user:ro` seems to allow the container access to some of the host's binaries installed with home manager.
 - Installing openssl was quite important for today (06/01/2024), but it likely won't be necessary into the future (it will probably be a different dep, which is bound to happen considering Arch is usually bleeding edge).
 - You might not need the --verbose flag, but I find it helpful.
-- I've not read deep enough into the official init script to understand what risk (if any) exists in performing the partial update above (force refresh + install pkg xyz). If things go wrong, it might be helpful to tweak the install command to "pacman -S -y -y -u" instead, but I haven't tried that. 
+- ~~I've not read deep enough into the official init script to understand what risk (if any) exists in performing the partial update above (force refresh + install pkg xyz). If things go wrong, it might be helpful to tweak the install command to "pacman -S -y -y -u" instead, but I haven't tried that.~~ 
 
 And enter!
 
